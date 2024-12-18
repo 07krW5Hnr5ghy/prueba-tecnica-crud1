@@ -14,7 +14,7 @@ class PostgresSingleton{
                     host:PG_HOST,
                     port:PG_PORT,
                     dialect:"postgres",
-                    logging:true
+                    logging:false
                 }
             );
             PostgresSingleton.instance = this;
@@ -36,5 +36,4 @@ class PostgresSingleton{
 }
 
 const postgresInstance = new PostgresSingleton();
-Object.freeze(postgresInstance);
 export default postgresInstance;

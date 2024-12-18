@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient,ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -7,7 +7,14 @@ const {MONGO_URI,MONGO_DB_NAME} = process.env;
 class MongoSingleton{
     constructor(){
         if(!MongoSingleton.instance){
-            this.client = new MongoClient(MONGO_URI);
+            this.client = new MongoClient(MONGO_URI,{
+                serverApi:{
+                    version:ServerApiVersion.v1,
+                    strict:true,
+                    deprecationErrors:true
+                }
+            });
+            this.db = null;
             MongoSingleton.instance = this;
         }
         return MongoSingleton.instance;
@@ -16,6 +23,7 @@ class MongoSingleton{
         try{
             if(!this.db){
                 await this.client.connect();
+                console.log(this.client);
                 this.db = this.client.db(MONGO_DB_NAME);
                 console.log("MongoDB connected successfully.");
             }
@@ -36,5 +44,4 @@ class MongoSingleton{
 }
 
 const mongoInstance = new MongoSingleton();
-Object.freeze(mongoInstance);
 export default mongoInstance;

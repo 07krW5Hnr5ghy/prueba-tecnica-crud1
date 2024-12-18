@@ -59,3 +59,5 @@ const seedData = async () => {
         console.error("Error seeding data:",error);
     }
 }
+
+seedData();
