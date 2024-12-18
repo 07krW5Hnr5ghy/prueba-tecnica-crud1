@@ -56,9 +56,10 @@ const seedData = async () => {
         await PetFactory.create("Mark","Lobster",alice.id);
         await PetFactory.create("Tammy","Snake",alice.id);
 
-
     }catch(error){
         console.error("Error seeding data:",error);
+    }finally{
+        postgresInstance.close();
     }
 }
 

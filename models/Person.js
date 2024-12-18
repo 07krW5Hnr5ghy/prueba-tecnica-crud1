@@ -5,7 +5,7 @@ import postgresInstance from "../configs/postgres.js";
 const sequelize = postgresInstance.getSequelize();
 
 const Person = sequelize.define(
-    "person",
+    "Person",
     {
         id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
         name:{type:DataTypes.STRING,allowNull:false},
@@ -13,9 +13,13 @@ const Person = sequelize.define(
     },
     {
         schema:'main',
+        tableName:'persons',
         underscored:true,
         timestamps:false
     }
 );
 
+
+console.log("Person model exists?");
+console.log(Person === sequelize.models.Person);
 export default Person;

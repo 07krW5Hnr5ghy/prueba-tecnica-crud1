@@ -8,16 +8,15 @@ class PersonRepository{
         this.mongo = mongoInstance;
     }
     async findAllPostgres(){
-        const {Person} = this.postgres.models;
         return await Person.findAll({include:["cars","pets"]});
     }
     async findAllMongo(){
         const db = await this.mongo.connect();
-        return await db.collection("people").find().toArray();
+        return await db.collection("persons").find().toArray();
     }
     async saveToMongo(personDocument){
         const db = await this.mongo.connect();
-        return await db.collection("people").insertOne(personDocument);
+        return await db.collection("persons").insertOne(personDocument);
     }
 }
 
