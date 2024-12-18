@@ -1,5 +1,7 @@
-import { Pool } from "pg";
+import pkg from "pg";
 import { MongoClient } from "mongodb";
+
+const {Pool} = pkg;
 
 class DatabaseService{
     constructor(){
