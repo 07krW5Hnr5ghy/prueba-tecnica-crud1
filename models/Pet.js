@@ -1,16 +1,17 @@
 import { DataTypes } from "sequelize";
 
 import postgresInstance from "../configs/postgres.js";
+
 import Person from "./Person.js";
 
 const sequelize = postgresInstance.getSequelize();
 
-const Car = sequelize.define(
-    "Car",
+const Pet = sequelize.define(
+    "Pet",
     {
         id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
-        brand:{type:DataTypes.STRING,allowNull:false},
-        model:{type:DataTypes.STRING,allowNull:false},
+        name:{type:DataTypes.STRING,allowNull:false},
+        type:{type:DataTypes.STRING,allowNull:false},
         personId:{
             type:DataTypes.INTEGER,
             references:{model:Person,key:"id"},
@@ -20,7 +21,7 @@ const Car = sequelize.define(
     {timestamps:false}
 );
 
-Car.belongsTo(Person,{foreignKey:"personId"});
-Person.hasMany(Car,{foreignKey:"personId"});
+Pet.belongsTo(Person,{foreignKey:"personId"});
+Person.hasMany(Pet,{foreignKey:"personId"});
 
-export default Car;
+export default Pet;
