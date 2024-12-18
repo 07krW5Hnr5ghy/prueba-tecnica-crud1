@@ -5,13 +5,17 @@ import postgresInstance from "../configs/postgres.js";
 const sequelize = postgresInstance.getSequelize();
 
 const Person = sequelize.define(
-    "Person",
+    "person",
     {
         id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
         name:{type:DataTypes.STRING,allowNull:false},
         age:{type:DataTypes.INTEGER,allowNull:false}
     },
-    {timestamps:false}
+    {
+        schema:'main',
+        underscored:true,
+        timestamps:false
+    }
 );
 
 export default Person;

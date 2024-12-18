@@ -6,7 +6,7 @@ import Person from "./Person.js";
 const sequelize = postgresInstance.getSequelize();
 
 const Car = sequelize.define(
-    "Car",
+    "car",
     {
         id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
         brand:{type:DataTypes.STRING,allowNull:false},
@@ -17,7 +17,11 @@ const Car = sequelize.define(
             allowNull:false,
         },
     },
-    {timestamps:false}
+    {
+        schema:'main',
+        underscored:true,
+        timestamps:false
+    }
 );
 
 Car.belongsTo(Person,{foreignKey:"personId"});

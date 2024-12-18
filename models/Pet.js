@@ -7,7 +7,7 @@ import Person from "./Person.js";
 const sequelize = postgresInstance.getSequelize();
 
 const Pet = sequelize.define(
-    "Pet",
+    "pet",
     {
         id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
         name:{type:DataTypes.STRING,allowNull:false},
@@ -18,7 +18,11 @@ const Pet = sequelize.define(
             allowNull:false,
         },
     },
-    {timestamps:false}
+    {
+        schema:'main',
+        underscored:true,
+        timestamps:false
+    }
 );
 
 Pet.belongsTo(Person,{foreignKey:"personId"});

@@ -23,7 +23,6 @@ class MongoSingleton{
         try{
             if(!this.db){
                 await this.client.connect();
-                console.log(this.client);
                 this.db = this.client.db(MONGO_DB_NAME);
                 console.log("MongoDB connected successfully.");
             }

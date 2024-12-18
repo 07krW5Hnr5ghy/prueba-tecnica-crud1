@@ -10,6 +10,8 @@ dotenv.config();
 const seedData = async () => {
     try{
         const sequelize = postgresInstance.getSequelize();
+        await sequelize.dropSchema('main');
+        await sequelize.createSchema('main');
         await sequelize.sync({force:true});
 
         // Create persons
