@@ -1,16 +1,17 @@
-export default class Person{
-    constructor({id,name,email}){
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-    static fromRow({id,name,email}=row){
-        return new Person({id,name,email});
-    }
-    toRow(){
-        return{
-            name:this.name,
-            email:this.email,
-        }
-    }
-}
+import { DataTypes } from "sequelize";
+
+import postgresInstance from "../configs/postgres.js";
+
+const sequelize = postgresInstance.getSequelize();
+
+const Person = sequelize.define(
+    "Person",
+    {
+        id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
+        name:{type:DataTypes.STRING,allowNull:false},
+        age:{type:DataTypes.INTEGER,allowNull:false}
+    },
+    {timestamps:false}
+);
+
+export default Person;
