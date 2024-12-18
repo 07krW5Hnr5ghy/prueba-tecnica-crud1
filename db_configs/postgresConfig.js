@@ -5,7 +5,7 @@ const PG_CONFIG = {
     user:PG_USER,
     host:PG_HOST,
     database:PG_DB,
-    password:String(PG_PASSWORD),
+    password:PG_PASSWORD,
     port:PG_PORT
 };
 export default PG_CONFIG;
