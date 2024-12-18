@@ -26,8 +26,16 @@ class PostgresSingleton{
             await this.sequelize.authenticate();
             console.log("PostgreSQL connected successfully.");
         }catch(error){
-            console.error("Error connecting to PostgresSQL:", error);
+            console.error("Error connecting to PostgreSQL:", error);
             throw error;
+        }
+    }
+    async close(){
+        try{
+            await this.sequelize.close();
+            console.log("PostgreSQL connection closed.");
+        }catch(error){
+            console.error("Error closing PostgreSQL connection:",error);
         }
     }
     getSequelize(){
