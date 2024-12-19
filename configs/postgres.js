@@ -12,8 +12,8 @@ class PostgresSingleton{
                 PG_USER,
                 PG_PASSWORD,
                 {
-                    host:PG_HOST,
-                    port:PG_PORT,
+                    host:PG_HOST || 'localhost',
+                    port:PG_PORT || 5432,
                     dialect:"postgres",
                     logging:false
                 }
@@ -32,8 +32,8 @@ class PostgresSingleton{
                     PG_USER,
                     PG_PASSWORD,
                     {
-                        host:PG_HOST,
-                        port:PG_PORT,
+                        host:PG_HOST || 'localhost',
+                        port:PG_PORT || 5432,
                         dialect:"postgres",
                         logging:false
                     }
