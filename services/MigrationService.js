@@ -1,18 +1,30 @@
-import associateModels from "../models/index.js";
 import personRepository from "../repositories/PersonRepository.js";
 import postgresInstance from "../configs/postgres.js";
 import mongoInstance from "../configs/mongo.js";
 class MigrationService{
     async migratePostgresToMongo(){
         try{
-            // init postgres connection
-            await postgresInstance.connect();
+            // Ensure the postgres connection is active
+            if(!postgresInstance.isConnected()){
+                await postgresInstance.connect();
+            }
             // init mongodb connection
             await mongoInstance.connect();
-            // asociate models
-            await associateModels();
+            
             // Fetch all persons, cars, and pets from PostgreSQL
             const persons = await personRepository.findAllPostgres();
+            // Fetch all persons from mongoDB
+            const mongoPersons = await personRepository.findAllMongo();
+
+            if(mongoPersons.length){
+                mongoPersons.forEach(mongoPerson => {
+                    persons.forEach(person=>{
+                        if(person.id===mongoPerson._id){
+                            throw new Error(`Error: person #${person.id} ${person.name} already exists in mongoDB migration canceled`);                            
+                        }
+                    });
+                });
+            }
 
             // Transform data into the MongoDB format
             const transformedData = persons.map(person=>({
@@ -37,13 +49,11 @@ class MigrationService{
 
             console.log("Migration completed successfully");
 
-            return "Migration completed successfully";
+            return await personRepository.findAllMongo();
         }catch(error){
+            postgresInstance.close();
+            mongoInstance.close();
             console.error("Error migrating data:",error);
-        }finally{
-            // closing connections
-            await postgresInstance.close();
-            await mongoInstance.close();
         }
     }
 }

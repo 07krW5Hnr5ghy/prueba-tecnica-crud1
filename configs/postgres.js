@@ -22,9 +22,24 @@ class PostgresSingleton{
         }
         return PostgresSingleton.instance;
     }
+
     async connect(){
         try{
-            await this.sequelize.authenticate();
+            if(!this.sequelize){
+                console.log("Initialized PostgreSQL connection...");
+                this.sequelize = new Sequelize(
+                    PG_DB,
+                    PG_USER,
+                    PG_PASSWORD,
+                    {
+                        host:PG_HOST,
+                        port:PG_PORT,
+                        dialect:"postgres",
+                        logging:false
+                    }
+                );
+                await this.sequelize.authenticate();
+            }
             console.log("PostgreSQL connected successfully.");
         }catch(error){
             console.error("Error connecting to PostgreSQL:", error);
@@ -33,11 +48,18 @@ class PostgresSingleton{
     }
     async close(){
         try{
-            await this.sequelize.close();
-            console.log("PostgreSQL connection closed.");
+            if(this.sequelize){
+                console.log("Closing PostgreSQL connection...");
+                await this.sequelize.close();
+                this.sequelize=null;
+                console.log("PostgreSQL connection closed.");
+            }
         }catch(error){
             console.error("Error closing PostgreSQL connection:",error);
         }
+    }
+    isConnected(){
+        return this.sequelize !== null;
     }
     getSequelize(){
         return this.sequelize;

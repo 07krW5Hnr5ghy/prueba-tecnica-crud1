@@ -19,7 +19,4 @@ const Person = sequelize.define(
     }
 );
 
-
-console.log("Person model exists?");
-console.log(Person === sequelize.models.Person);
 export default Person;
