@@ -25,7 +25,8 @@ class MigrationService{
                 })),
                 pets:person.pets.map(pet=>({
                     id:pet.id,
-                    name:pet.name
+                    name:pet.name,
+                    type:pet.type
                 })),
             }));
 
