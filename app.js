@@ -23,7 +23,6 @@ const checkDBConnection = async () => {
         await mongoInstance.connect();
         console.log("PostgreSQL and MongoDB databases connection working.");
         //await associateModels();
-        await migrationService.migratePostgresToMongo();
     }catch(error){
         console.error("Error starting the application:",error);
         process.exit(1);
@@ -34,7 +33,7 @@ const checkDBConnection = async () => {
     }
 };
 
-checkDBConnection();
+//checkDBConnection();
 
 app.listen(port,()=>{
     console.log(`listen port => ${port}`);
