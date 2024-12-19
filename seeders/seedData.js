@@ -56,6 +56,8 @@ const seedData = async () => {
         await PetFactory.create("Mark","Lobster",alice.id);
         await PetFactory.create("Tammy","Snake",alice.id);
 
+        console.log("Seeding of records into postgreSQL database finished");
+
     }catch(error){
         console.error("Error seeding data:",error);
     }finally{

@@ -23,7 +23,6 @@ const initializeDBConnections = async () => {
         // asociate models for postgres
         await associateModels();
         console.log("PostgreSQL and MongoDB databases connection working.");
-        //await associateModels();
     }catch(error){
         console.error("Error starting the application:",error);
         await mongoInstance.close();
