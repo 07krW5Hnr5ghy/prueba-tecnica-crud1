@@ -1,9 +1,9 @@
 import {Router} from "express";
 
-import { getPersons } from "../controllers/persons.js";
+import { migrateData } from "../controllers/persons.js";
 
 const router = Router();
 
-router.get("/",getPersons);
+router.get("/",migrateData);
 
 export {router};

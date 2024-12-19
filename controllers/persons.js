@@ -1,12 +1,18 @@
 import migrationService from "../services/migrationService.js";
-const getPersons = async (request,response) => {
+const migrateData = async (request,response) => {
     try{
-        const persons = await migrationService.migratePostgresToMongo();
-        return response.status(200).send(persons);
+        const result = await migrationService.migratePostgresToMongo();
+        response.status(200).json({
+            success:true,
+            message:result.message,
+            data:result.data
+        });
     }catch(error){
-        console.log("Error fetching persons:",error);
-        return response.status(500).send({ message: "Error fetching persons."});
+        response.status(400).send({
+            success:false,
+            message:error.message
+        });
     }
 }
 
-export {getPersons};
+export {migrateData};

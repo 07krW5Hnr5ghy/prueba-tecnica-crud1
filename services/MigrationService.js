@@ -20,7 +20,7 @@ class MigrationService{
                 mongoPersons.forEach(mongoPerson => {
                     persons.forEach(person=>{
                         if(person.id===mongoPerson._id){
-                            throw new Error(`Error: person #${person.id} ${person.name} already exists in mongoDB migration canceled`);                            
+                            throw new Error(`Error: person #${person.id} ${person.name} already exists in mongoDB database migration canceled`);                            
                         }
                     });
                 });
@@ -49,11 +49,12 @@ class MigrationService{
 
             console.log("Migration completed successfully");
 
-            return await personRepository.findAllMongo();
+            return {message:"Migration completed successfully.",data:transformedData};
         }catch(error){
             postgresInstance.close();
             mongoInstance.close();
-            console.error("Error migrating data:",error);
+            console.error("Error migrationg",error.message);
+            throw new Error(error.message);
         }
     }
 }
