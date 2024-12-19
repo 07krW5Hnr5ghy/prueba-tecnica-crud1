@@ -1,6 +1,7 @@
 import personRepository from "../repositories/PersonRepository.js";
 import postgresInstance from "../configs/postgres.js";
 import mongoInstance from "../configs/mongo.js";
+import mapPersonToMongo from "../mappers/personMapper.js";
 class MigrationService{
     async migratePostgresToMongo(){
         try{
@@ -19,31 +20,14 @@ class MigrationService{
                 mongoDB database is already stored in the mongoDB database
                 and abort the migration.
              */
-            if(mongoPersons.length){
-                mongoPersons.forEach(mongoPerson => {
-                    persons.forEach(person=>{
-                        if(person.id===mongoPerson._id){
-                            throw new Error(`Error: person #${person.id} ${person.name} already exists in mongoDB database migration canceled`);                            
-                        }
-                    });
-                });
-            }
-
+            const existingIds = new Set(mongoPersons.map((doc)=>doc._id));
+            persons.filter((person)=>{
+                if(existingIds.has(person.id)){
+                    throw new Error(`person #${person.id} ${person.name} already exists in mongoDB database migration aborted`);
+                }
+            });
             // Transform data into the MongoDB format
-            const transformedData = persons.map(person=>({
-                _id:person.id,
-                name:person.name,
-                cars:person.cars.map(car=>({
-                    id:car.id,
-                    model:car.model,
-                    brand:car.brand
-                })),
-                pets:person.pets.map(pet=>({
-                    id:pet.id,
-                    name:pet.name,
-                    type:pet.type
-                })),
-            }));
+            const transformedData = persons.map(mapPersonToMongo);
 
             // Save transformed data into MongoDB
             for(const person of transformedData){
@@ -54,9 +38,9 @@ class MigrationService{
 
             return {message:"Migration completed successfully.",data:transformedData};
         }catch(error){
+            console.error("Error migrating",error);
             postgresInstance.close();
             mongoInstance.close();
-            console.error("Error migrationg",error.message);
             throw new Error(error.message);
         }
     }
