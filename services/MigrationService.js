@@ -2,6 +2,8 @@ import personRepository from "../repositories/PersonRepository.js";
 import postgresInstance from "../configs/postgres.js";
 import mongoInstance from "../configs/mongo.js";
 import mapPersonToMongo from "../mappers/personMapper.js";
+import DataError from "../errors/DataError.js";
+import associateModels from "../models/index.js";
 class MigrationService{
     async migratePostgresToMongo(){
         try{
@@ -14,6 +16,9 @@ class MigrationService{
             
             // Fetch all persons, cars, and pets from PostgreSQL
             const persons = await personRepository.findAllPostgres();
+            if(!persons.length){
+                throw new DataError("No records in the postgreSQL database, execute the seeder and try again.");
+            }
             // Fetch all persons from mongoDB
             const mongoPersons = await personRepository.findAllMongo();
             /* check if any person to migrate from postgreSQL database to
@@ -23,7 +28,7 @@ class MigrationService{
             const existingIds = new Set(mongoPersons.map((doc)=>doc._id));
             persons.filter((person)=>{
                 if(existingIds.has(person.id)){
-                    throw new Error(`person #${person.id} ${person.name} already exists in mongoDB database migration aborted`);
+                    throw new DataError(`person with id #${person.id} ${person.name} already exists in mongoDB database migration aborted, check mongoDB database before trying again.`);
                 }
             });
             // Transform data into the MongoDB format
@@ -38,10 +43,15 @@ class MigrationService{
 
             return {message:"Migration completed successfully.",data:transformedData};
         }catch(error){
-            console.error("Error migrating",error);
-            postgresInstance.close();
-            mongoInstance.close();
-            throw new Error(error.message);
+            if(error instanceof DataError){
+                console.error("Error in data for migration:",error);
+                throw error;    
+            }else{
+                console.error("Unexpected error during migration closing databases connection:",error);
+                await postgresInstance.close();
+                await mongoInstance.close();
+                throw new Error(error.message);
+            }
         }
     }
 }

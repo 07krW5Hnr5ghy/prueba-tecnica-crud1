@@ -1,3 +1,4 @@
+import DataError from "../errors/DataError.js";
 import migrationService from "../services/migrationService.js";
 const migrateData = async (request,response) => {
     try{
@@ -8,10 +9,14 @@ const migrateData = async (request,response) => {
             data:result.data
         });
     }catch(error){
-        response.status(400).send({
-            success:false,
-            message:error.message
-        });
+        if(error instanceof DataError){
+            response.status(400).send({
+                success:false,
+                message:error.message
+            });
+        }else{
+            response.status(500).send({error:`Internal Server Error:${error.message}`});
+        }
     }
 }
 
