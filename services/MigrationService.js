@@ -15,7 +15,10 @@ class MigrationService{
             const persons = await personRepository.findAllPostgres();
             // Fetch all persons from mongoDB
             const mongoPersons = await personRepository.findAllMongo();
-
+            /* check if any person to migrate from postgreSQL database to
+                mongoDB database is already stored in the mongoDB database
+                and abort the migration.
+             */
             if(mongoPersons.length){
                 mongoPersons.forEach(mongoPerson => {
                     persons.forEach(person=>{
