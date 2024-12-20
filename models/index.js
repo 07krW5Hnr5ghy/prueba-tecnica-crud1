@@ -2,6 +2,7 @@ import Person from "./Person.js";
 import Car from "./Car.js";
 import Pet from "./Pet.js";
 
+// associations of postgres databases models
 const associateModels = async () => {
     Pet.belongsTo(Person,{foreignKey:"personId"});
     Person.hasMany(Pet,{foreignKey:"personId",as:"pets"});

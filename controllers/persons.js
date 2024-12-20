@@ -1,5 +1,6 @@
 import DataError from "../errors/DataError.js";
 import migrationService from "../services/migrationService.js";
+// controller with error handling
 const migrateData = async (request,response) => {
     try{
         const result = await migrationService.migratePostgresToMongo();

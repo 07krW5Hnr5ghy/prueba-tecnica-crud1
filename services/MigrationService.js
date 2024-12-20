@@ -3,7 +3,6 @@ import postgresInstance from "../configs/postgres.js";
 import mongoInstance from "../configs/mongo.js";
 import mapPersonToMongo from "../mappers/personMapper.js";
 import DataError from "../errors/DataError.js";
-import associateModels from "../models/index.js";
 class MigrationService{
     async migratePostgresToMongo(){
         try{

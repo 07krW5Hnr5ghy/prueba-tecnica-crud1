@@ -72,7 +72,9 @@ npm start
 ## Commands
 
 Start the Server: npm start
+
 Run Seeders: npm run seed
+
 Start development mode: npm dev
 
 ## API Documentation
@@ -166,13 +168,13 @@ Ensures a single instance for database connections:
 
 ### 2. Factory
 
-Generates model instances for testing or seeding:
+Generates model instances for create postgres entities records for seeding:
 
 - Factories: `factories/PersonFactory.js`,`factories/CarFactory.js` and `factories/PetFactory.js`
 
 ### 3. Repository
 
-Abstracts database operations:
+Abstracts database operations in repository folder:
 
 - Repositories: `repositories/PersonRepository.js`,`repositories/CarRepository.js` and `repositories/PetRepository.js`
 

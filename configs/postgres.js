@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 
 dotenv.config();
 const {PG_USER,PG_HOST,PG_DB,PG_PASSWORD,PG_PORT} = process.env;
-
+// PostgreSQL connection
 class PostgresSingleton{
     constructor(){
         if(!PostgresSingleton.instance){

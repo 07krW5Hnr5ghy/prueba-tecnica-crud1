@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const {MONGO_URI,MONGO_DB_NAME} = process.env;
-
+// mongoDB connection
 class MongoSingleton{
     constructor(){
         if(!MongoSingleton.instance){
