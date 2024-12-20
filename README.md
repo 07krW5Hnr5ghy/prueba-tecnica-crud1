@@ -88,6 +88,7 @@ Init process of migrating postgres persons,cars and pets records to a mongo db c
 Response:
 
 200 OK: return transformed data stored in mongo db.
+
 400 Bad Request: return if a message showing if a person already exists in the mongodb collection before migrating the data from postgres.
 
 Example request:
